@@ -1,5 +1,6 @@
 import uuid
 import time
+from pprint import pprint
 
 
 class User:
@@ -24,8 +25,18 @@ class Ledger:
     def add_transaction(self, giver, receiver, amount):
         self._transactions.append({
             "time_stamp": time.time(),
+            "type": "transaction",
             "giver": giver,
             "receiver": receiver,
+            "amount": amount
+        })
+
+    def add_even_payment(self, payer, participants, amount):
+        self._transactions.append({
+            "time_stamp": time.time(),
+            "type": "shared_payment",
+            "payer": payer,
+            "participants": participants,
             "amount": amount
         })
 
@@ -35,8 +46,14 @@ class Ledger:
     def get_net_summary(self):
         net_dict = dict()
         for transaction in self.get_transactions():
-            net_dict[transaction["giver"]] = net_dict.get(transaction["giver"], 0) - transaction["amount"]
-            net_dict[transaction["receiver"]] = net_dict.get(transaction["receiver"], 0) + transaction["amount"]
+            if transaction["type"] == 'transaction':
+                net_dict[transaction["giver"]] = net_dict.get(transaction["giver"], 0) - transaction["amount"]
+                net_dict[transaction["receiver"]] = net_dict.get(transaction["receiver"], 0) + transaction["amount"]
+            if transaction["type"] == 'shared_payment':
+                portion_amount = transaction["amount"] / (len(transaction["participants"]) + 1)
+                net_dict[transaction["payer"]] = net_dict.get(transaction["payer"], 0) - (portion_amount * len(transaction["participants"]))
+                for participant in transaction["participants"]:
+                    net_dict[participant] = net_dict.get(participant, 0) + portion_amount
         return net_dict
 
 
@@ -45,15 +62,29 @@ def main():
     chris = User("Chris")
     thomas = User("Thomas")
 
+    print(f"{'New Ledger':-^80}")
     ledger = Ledger()
     ledger.add_transaction(jason, chris, 7)
     ledger.add_transaction(jason, thomas, 10)
     ledger.add_transaction(thomas, chris, 25)
     ledger.add_transaction(chris, jason, 3)
     print('Transactions')
-    print(ledger.get_transactions())
+    pprint(ledger.get_transactions())
     print('Net Summary')
-    print(ledger.get_net_summary())
+    pprint(ledger.get_net_summary())
+    print()
+
+
+    print(f"{'New Ledger':-^80}")
+    ledger = Ledger()
+    ledger.add_even_payment(chris, [jason, thomas], 25)
+    ledger.add_even_payment(chris, [jason, thomas], 25)
+    ledger.add_even_payment(chris, [jason, thomas], 25)
+    print('Transactions')
+    pprint(ledger.get_transactions())
+    print('Net Summary')
+    pprint(ledger.get_net_summary())
+    print()
 
 
 if __name__ == "__main__":
