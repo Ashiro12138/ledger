@@ -22,7 +22,7 @@ class Ledger:
     def __init__(self):
         self._transactions = list()
 
-    def add_transaction(self, giver, receiver, amount):
+    def add_transaction(self, giver: User, receiver: User, amount: float):
         self._transactions.append({
             "time_stamp": time.time(),
             "type": "transaction",
@@ -31,7 +31,7 @@ class Ledger:
             "amount": amount
         })
 
-    def add_payment(self, payer, participants, amount, individual_amounts):
+    def add_payment(self, payer: User, participants: list[User], amount: float, individual_amounts: list[float]):
         if amount < sum(individual_amounts):
             raise Exception("Individual amounts does not add up to total amount")
         self._transactions.append({
@@ -43,7 +43,7 @@ class Ledger:
             "individual_amounts": individual_amounts
         })
 
-    def add_even_payment(self, payer, participants, amount):
+    def add_even_payment(self, payer: User, participants: list[User], amount: float):
         self._transactions.append({
             "time_stamp": time.time(),
             "type": "shared_payment",
@@ -52,10 +52,10 @@ class Ledger:
             "amount": amount
         })
 
-    def get_transactions(self):
+    def get_transactions(self) -> list[dict]:
         return self._transactions
 
-    def get_net_summary(self):
+    def get_net_summary(self) -> dict:
         net_dict = dict()
         for transaction in self.get_transactions():
             if transaction["type"] == 'transaction':
