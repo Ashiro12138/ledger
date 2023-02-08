@@ -1,6 +1,5 @@
 import uuid
 import time
-from pprint import pprint
 
 
 class User:
@@ -77,32 +76,7 @@ class Ledger:
 
 
 def main():
-    jason = User("Jason")
-    chris = User("Chris")
-    thomas = User("Thomas")
-
-    print(f"{'New Ledger':-^80}")
-    ledger = Ledger()
-    ledger.add_transaction(jason, chris, 7)
-    ledger.add_transaction(jason, thomas, 10)
-    ledger.add_transaction(thomas, chris, 25)
-    ledger.add_transaction(chris, jason, 3)
-    print('Transactions')
-    pprint(ledger.get_transactions())
-    print('Net Summary')
-    pprint(ledger.get_net_summary())
-    print()
-
-    print(f"{'New Ledger':-^80}")
-    ledger = Ledger()
-    ledger.add_even_payment(chris, [jason, thomas], 25)
-    ledger.add_even_payment(chris, [jason, thomas], 25)
-    ledger.add_even_payment(chris, [jason, thomas], 25)
-    print('Transactions')
-    pprint(ledger.get_transactions())
-    print('Net Summary')
-    pprint(ledger.get_net_summary())
-    print()
+    pass
 
 
 if __name__ == "__main__":
