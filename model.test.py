@@ -39,6 +39,11 @@ class LedgerTest(unittest.TestCase):
         net_summary = self.ledger.get_net_summary()
         self.assertEqual(net_summary, {self.userA: -50, self.userB: 25, self.userC: 25})
 
+    def test_payment(self):
+        self.ledger.add_payment(self.userA, [self.userB, self.userC], 50, [15, 20])
+        net_summary = self.ledger.get_net_summary()
+        self.assertEqual(net_summary, {self.userA: -50, self.userB: 15, self.userC: 20})
+
 
 if __name__ == "__main__":
     unittest.main()
