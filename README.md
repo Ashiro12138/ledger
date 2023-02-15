@@ -7,6 +7,5 @@ A ledger system to keep trap of monetary transactions
 - Improve readability
 
 ## Thoughts
-Might reduce scope and only allow simple transactions to start off with  
-Use pocketbase as backend
+Use pocketbase as backend?
 
